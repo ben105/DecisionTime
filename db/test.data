@@ -1,0 +1,37 @@
+-- Some example topics
+INSERT INTO topics (title) VALUES ('Defense');
+INSERT INTO topics (title) VALUES ('Tax Reform');
+INSERT INTO topics (title) VALUES ('Health Care');
+INSERT INTO topics (title) VALUES ('Economy');
+INSERT INTO topics (title) VALUES ('Environment');
+INSERT INTO topics (title) VALUES ('Civil Rights');
+
+-- Some example questions for some topics
+INSERT INTO questions (topics_id, question) VALUES (3, 'What is your stance on abortion?');
+INSERT INTO questions (topics_id, question) VALUES (3, 'Should marital rape be classified and punished as severely as non-marital rape?');
+INSERT INTO questions (topics_id, question) VALUES (3, 'Should health insurance providers be required to offer free birth control?');
+INSERT INTO questions (topics_id, question) VALUES (6, 'Do you support the legalization of same sex marriage?');
+INSERT INTO questions (topics_id, question) VALUES (3, 'Should the government continue to fund Planned Parenthood?');
+INSERT INTO questions (topics_id, question) VALUES (5, 'Should the government increase environmental regulations to prevent climate change?');
+
+-- Create a fake user
+INSERT INTO users (first, last, email, password, salt) VALUES (
+  'Ben',
+  'Rooke',
+  'ben_rooke@icloud.com',
+  decode('5e63995d290bffe25d40a9a76e8e446bbdac36da', 'hex'),
+  '1234567890abcdef');
+
+-- Some made-up scores for testing topics.
+INSERT INTO topic_scores (topics_id, users_id, score) VALUES (1, 1, 8);
+INSERT INTO topic_scores (topics_id, users_id, score) VALUES (2, 1, 2);
+INSERT INTO topic_scores (topics_id, users_id, score) VALUES (3, 1, -22);
+INSERT INTO topic_scores (topics_id, users_id, score) VALUES (4, 1, 12);
+INSERT INTO topic_scores (topics_id, users_id, score) VALUES (5, 1, -3);
+INSERT INTO topic_scores (topics_id, users_id, score) VALUES (6, 1, -7);
+
+-- Some made-up scores for testing questions.
+INSERT INTO question_scores (questions_id, users_id, score) VALUES (1, 1, -7);
+INSERT INTO question_scores (questions_id, users_id, score) VALUES (3, 1, -8);
+INSERT INTO question_scores (questions_id, users_id, score) VALUES (7, 1, -4);
+INSERT INTO question_scores (questions_id, users_id, score) VALUES (8, 1, -9);

@@ -1,0 +1,39 @@
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  first VARCHAR(32) NOT NULL,
+  last VARCHAR(32) NOT NULL,
+  email VARCHAR(64) NOT NULL UNIQUE,
+  password BYTEA NOT NULL,
+  salt CHAR(16) NOT NULL
+);
+
+CREATE TABLE topics (
+  id SERIAL PRIMARY KEY,
+  title varchar(64) NOT NULL UNIQUE
+);
+
+CREATE TABLE topic_scores (
+  id SERIAL PRIMARY KEY,
+  topics_id INTEGER NOT NULL,
+  users_id INTEGER NOT NULL,
+  FOREIGN KEY (topics_id) REFERENCES topics(id),
+  FOREIGN KEY (users_id) REFERENCES users(id),
+  UNIQUE(topics_id, users_id)
+);
+
+CREATE TABLE questions (
+  id SERIAL PRIMARY KEY,
+  topics_id INTEGER NOT NULL,
+  question TEXT UNIQUE NOT NULL,
+  FOREIGN KEY (topics_id) REFERENCES topics(id)
+);
+
+CREATE TABLE question_scores (
+  id SERIAL PRIMARY KEY,
+  questions_id INTEGER NOT NULL,
+  users_id INTEGER NOT NULL,
+  score INTEGER NOT NULL,
+  FOREIGN KEY (questions_id) REFERENCES questions(id),
+  FOREIGN KEY (users_id) REFERENCES users(id),
+  UNIQUE(questions_id, users_id)
+);

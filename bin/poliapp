@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+
+from flask import Flask, request
+import logging
+import json
+import sys
+import psycopg2
+
+# Modules for poliapp
+sys.path.insert(0, '../lib')
+import polistore
+# import poliauth
+
+# Set up the error and debug logging.
+path = '/var/log/poliapp/poliapp.log'
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s: %(message)s',
+	filemode='a',
+	filename=path,
+	level=logging.DEBUG)
+
+# Attempt to open up the settings configurations.
+try:
+	f = open('settings.conf')
+	settings = json.load(f)
+except Exception as exc:
+	logging.error("Cannot load the settings.\n{}".format(exc))
+	sys.exit(1)
+db_server = settings['db_server']
+port = settings['port']
+
+app = Flask(__name__)
+
+conn = None
+try:
+	conn = psycopg2.connect("dbname=poli host=%s user=poli password=poli" % db_server)
+	conn.autocommit = True
+except Exception as exc:
+	logging.error('exception raised trying to connect to database\n%s', str(exc))
+	quit()
+
+cur = conn.cursor()
+
+####### Comments ########
+
+@app.route('/api/v1/questions', methods=['GET'])
+def questions():
+	questions = polistore.questions(cur)
+	return json.dumps(questions)
+
+@app.route('/api/v1/answer', methods=['POST'])
+def answer():
+	body = json.loads(request.data)
+	question_id = body['question_id']
+	answer_id = body['answer_id']
+	importance = body['importance']
+	return json.dumps({
+		'political_favorability': -7
+	})
+
+if __name__ == "__main__":
+	app.run(host='0.0.0.0', port=port)
+
+
